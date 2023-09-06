@@ -39,12 +39,26 @@ class Item3(BaseModel):
 
 
 @app.put("/items17/{item_id}")
-async def update_item(item_id: int, item: Item = Body(..., embed=True)):
+async def update_item(item_id: int, item: Item = Body(...,embed=True)):
     results = {"item_id": item_id, "item": item}
     return results
 
 @app.put("/items18/{item_id}")
-async def update_item(item_id: int, item: Item2):
+async def update_item(item_id: int, item: Item2 = Body(...
+    ,example={
+                {
+            "name": "Foo",
+            "description": "The pretender",
+            "price": 42.0,
+            "tax": 3.2,
+            "tags": ["rock", "metal", "bar"],
+            "image": {
+                "url": "http://example.com/baz.jpg",
+                "name": "The Foo live"
+            }
+        }
+    }
+)):
     result = {"item_id": item_id, "item":item}
     return result
 
@@ -54,5 +68,18 @@ async def update_item(item_id: int, item: Item3):
     return result
 
 @app.post("/images/multiple/")
-async def create_multiple_images(images: List[Image]):
+async def create_multiple_images(images: List[Image] = Body(...
+    ,example={
+        [ 
+            {
+                "url": "http://example.com/baz.jpg",
+                "name": "The Foo live"
+            },
+            {
+                "url": "http://example.com/dave.jpg",
+                "name": "The Baz"
+            }
+        ]
+    },
+)):
     return images
